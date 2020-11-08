@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov  7 19:33:46 2020
+
+@author: Zachary Dulac <zdulac@fordham.edu>
+"""
+
 import redis
 import random
 import math
@@ -11,7 +18,7 @@ def line_appender(file_path, target):
 		target.append(line)
 
 def name_selector(target_list):
-	selected = target_list[randrange(len(target_list))]
+	selected = target_list[random.randrange(len(target_list))]
 	return selected
         
 def name_builder(first_name_list_path, last_name_list_path):
@@ -27,20 +34,19 @@ def name_builder(first_name_list_path, last_name_list_path):
 	name = first_name_selected+" "+last_name_selected
 	return name
 
-if __name__ == "__main__":
-	for i in range(0, 100):
-		ssn = random.randint(3121, 5672)
-		name = name_builder('first_names_list.txt', 'last_names_list.txt')
-    	pin = random.randint(1000, 9999)
-    	cb = random.uniform(0, 200000)
-    	cb *= 100
-    	cb = math.trunc(cb)
-    	cb /= 100
-    	sb = random.uniform(0, 200000)
-    	sb *= 100
-    	sb = math.trunc(cb)
-    	sb /= 100
+for i in range(0, 100):
+    ssn = random.randint(3121, 5672)
+    name = name_builder('first_names_list.txt', 'last_names_list.txt')
+    pin = random.randint(1000, 9999)
+    cb = random.uniform(0, 200000)
+    cb *= 100
+    cb = math.trunc(cb)
+    cb /= 100
+    sb = random.uniform(0, 200000)
+    sb *= 100
+    sb = math.trunc(cb)
+    sb /= 100
 
-    	d = {"SSN":ssn, "Name":name, "PIN":pin, "ChackingBalance":cb, "SavingBalance":sb}
+    d = {"SSN":ssn, "Name":name, "PIN":pin, "ChackingBalance":cb, "SavingBalance":sb}
 
-    	r.hset(name = i, mapping = d)
+    r.hset(name = i, mapping = d)

@@ -164,8 +164,8 @@ if __name__ == "__main__":
             
             if(pinput == pin):
                 flag = True
-                
-            print(flag)
+            else:
+                print("Incorrect PIN!")
             
         except ValueError:
             print("Values must be of integer type!")

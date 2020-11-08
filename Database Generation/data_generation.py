@@ -38,13 +38,15 @@ for i in range(0, 100):
     ssn = random.randint(3121, 5672)
     name = name_builder('first_names_list.txt', 'last_names_list.txt')
     pin = random.randint(1000, 9999)
+    
     cb = random.uniform(0, 200000)
     cb *= 100
     cb = math.trunc(cb)
     cb /= 100
-    sb = random.uniform(0, 200000)
+    
+    sb = random.uniform(0, 1200000)
     sb *= 100
-    sb = math.trunc(cb)
+    sb = math.trunc(sb)
     sb /= 100
 
     d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":cb, "SavingsBalance":sb}

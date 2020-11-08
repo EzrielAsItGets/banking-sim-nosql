@@ -2,7 +2,7 @@
 """
 Created on Sat Nov  7 19:33:46 2020
 
-@author: Zachary Dulac <zdulac@fordham.edu>
+@author: Ezriel Ciriaco <eciriaco@fordham.edu> & Zachary Dulac <zdulac@fordham.edu>
 """
 
 import redis

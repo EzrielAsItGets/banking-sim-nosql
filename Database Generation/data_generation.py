@@ -47,6 +47,6 @@ for i in range(0, 100):
     sb = math.trunc(cb)
     sb /= 100
 
-    d = {"SSN":ssn, "Name":name, "PIN":pin, "ChackingBalance":cb, "SavingBalance":sb}
+    d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":cb, "SavingsBalance":sb}
 
     r.hset(name = i, mapping = d)

@@ -31,7 +31,7 @@ def deposit(account_id):
         try:
             to_deposit = float(input("\nAmount to deposit: "))
             to_deposit *= 100
-            math.trunc(to_deposit)
+            to_deposit = math.trunc(to_deposit)
             to_deposit /= 100
             break
         except ValueError:
@@ -60,7 +60,7 @@ def withdraw(account_id):
         try:
             to_withdraw = float(input("\nAmount to withdraw: "))
             to_withdraw *= 100
-            math.trunc(to_withdraw)
+            to_withdraw = math.trunc(to_withdraw)
             to_withdraw /= 100
             break
         except ValueError:
@@ -95,7 +95,7 @@ def transfer(account_id):
         try:
             to_transfer = float(input("\nAmount to transfer: "))
             to_transfer *= 100
-            math.trunc(to_transfer)
+            to_transfer = math.trunc(to_transfer)
             to_transfer /= 100
             break
         except ValueError:

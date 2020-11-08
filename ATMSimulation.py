@@ -1,27 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Name: Ezriel Ciriaco
-
-HW4: ATM Simulation
-Desc: Simulates an ATM by displaying a menu of options that can 
-      deposit, withdraw, or transfer money on a user's account.
-
-Date Due: 29 September 2020
+      Zachary Dulac
 """
-import redis
-r = redis.Redis()
 
-def input_PIN():
-    user_pin = input("\nPlease enter your user PIN: ")
-    if user_pin.isnumeric():
-        if int(user_pin) >= 1000 and int(user_pin) <= 9999:
-            print("\nWelcome!")
-        else:
-            print("Invalid Pin! Try again...")
-            input_PIN()
-    else:
-        print("Invalid Input! Try again...")
-        input_PIN()
+import redis
+r = redis.Redis(host = "redis-18248.c15.us-east-1-2.ec2.cloud.redislabs.com", port = "18248", password = "P4eSETx01bA5elBJEDWkfvUmngXhZrbY")
 
 def print_menu():
     print("""\n
@@ -35,7 +19,8 @@ def print_menu():
     *****************
     """)
 
-def deposit():
+def deposit(account_id):
+    global r
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
@@ -45,16 +30,18 @@ def deposit():
             break
         except ValueError:
             print("Invalid input! Try again...")
-    global money_check, money_save
     if choice == 'C' or choice == 'c':
-        money_check += to_deposit
+        newBal = float(r.hget(account_id, "CheckingBalance")) + to_deposit
+        r.hset(account_id, "CheckingBalance", newBal)
     elif choice == 'S' or choice == 's':
-        money_save += to_deposit
-    print("\nChecking Account Balance: $" + str(money_check))
-    print("Savings Account Balance: $" + str(money_save))
-    input_choice()
+        newBal = float(r.hget(account_id, "SavingsBalance")) + to_deposit
+        r.hset(account_id, "SavingsBalance", newBal)
+    print("\nChecking Account Balance: $" + str(float(r.hget(account_id, "CheckingBalance"))))
+    print("Savings Account Balance: $" + str(float(r.hget(account_id, "SavingsBalance"))))
+    input_choice(account_id)
 
-def withdraw():
+def withdraw(account_id):
+    global r
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
@@ -83,9 +70,10 @@ def withdraw():
             print("Insufficient Funds!")
     print("\nChecking Account Balance: $" + str(money_check))
     print("Savings Account Balance: $" + str(money_save))
-    input_choice()
+    input_choice(account_id)
 
-def transfer():
+def transfer(account_id):
+    global r
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
@@ -112,13 +100,14 @@ def transfer():
             print("Insufficient Funds!")
     print("\nChecking Account Balance: $" + str(money_check))
     print("Savings Account Balance: $" + str(money_save))
-    input_choice()
+    input_choice(account_id)
 
 def exit_ATM():
     print("\nHave a nice day!")
     return 1
 
-def input_choice():
+def input_choice(account_id):
+    
     while True:
         try:
             option = int(input("\nPick a number corresponding to the desired option: "))
@@ -127,22 +116,40 @@ def input_choice():
             print("Invalid input! Try again...")
 
     if option == 1:
-        deposit()
+        deposit(account_id)
     elif option == 2:
-        withdraw()
+        withdraw(account_id)
     elif option == 3:
-        transfer()
+        transfer(account_id)
     elif option == 4:
         exit_ATM()
     else:
         print("\nInvalid input!")
-        input_choice()
+        input_choice(account_id)
 
 if __name__ == "__main__":
-    money_check = 1000
-    money_save = 500
-    input_PIN()
-    print("\nChecking Account Balance: $" + str(money_check))
-    print("Savings Account Balance: $" + str(money_save))
+    #money_check = 1000
+    #money_save = 500
+    
+    flag = False
+    while flag == False:
+        try:
+            account_id = int(input("Please input your Account Number: "))
+            pin = int(r.hget(account_id, "PIN"))
+            if(pin == None):
+                print("Invalid Account Number!")
+                continue
+            pinput = int(input("Please input your PIN: "))
+            
+            if(pinput == pin):
+                flag = True
+                
+            print(flag)
+            
+        except ValueError:
+            print("Values must be of integer type!")
+            
+    print("\nChecking Account Balance: $" + str(float(r.hget(account_id, "CheckingBalance"))))
+    print("Savings Account Balance: $" + str(float(r.hget(account_id, "SavingsBalance"))))
     print_menu()
-    input_choice()
+    input_choice(account_id)

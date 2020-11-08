@@ -86,32 +86,41 @@ def withdraw(account_id):
 
 def transfer(account_id):
     global r
+
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
+
     while True:
         try:
             to_transfer = float(input("\nAmount to transfer: "))
+            to_transfer *= 100
+            math.trunc(to_transfer)
+            to_transfer /= 100
             break
         except ValueError:
             print("Invalid input! Try again...")
-    global money_check, money_save
+
     if choice == 'C' or choice == 'c':
-        money_check -= to_transfer
-        money_save += to_transfer
-        if money_check < 0:
-            money_check += to_transfer
-            money_save -= to_transfer
+        if float(r.hget(account_id, "CheckingBalance")) >= to_transfer:
+            newBal = float(r.hget(account_id, "CheckingBalance")) - to_transfer
+            r.hset(account_id, "CheckingBalance", newBal)
+            newBal = float(r.hget(account_id, "SavingsBalance")) + to_transfer
+            r.hset(account_id, "SavingsBalance", newBal)
+        else:
             print("Insufficient Funds!")
     elif choice == 'S' or choice == 's':
-        money_save -= to_transfer
-        money_check += to_transfer
-        if money_save < 0:
-            money_save += to_transfer
-            money_check -= to_transfer
+        if float(r.hget(account_id, "SavingsBalance")) >= to_transfer:
+            newBal = float(r.hget(account_id, "SavingsBalance")) - to_transfer
+            r.hset(account_id, "SavingsBalance", newBal)
+            newBal = float(r.hget(account_id, "CheckingBalance")) + to_transfer
+            r.hset(account_id, "CheckingBalance", newBal)
+        else:
             print("Insufficient Funds!")
-    print("\nChecking Account Balance: $" + str(money_check))
-    print("Savings Account Balance: $" + str(money_save))
+
+    print("\nChecking Account Balance: $" + str(float(r.hget(account_id, "CheckingBalance"))))
+    print("Savings Account Balance: $" + str(float(r.hget(account_id, "SavingsBalance"))))
+
     input_choice(account_id)
 
 def exit_ATM():

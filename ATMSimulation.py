@@ -4,6 +4,7 @@ Name: Ezriel Ciriaco
       Zachary Dulac
 """
 
+import math
 import redis
 r = redis.Redis(host = "redis-18248.c15.us-east-1-2.ec2.cloud.redislabs.com", port = "18248", password = "P4eSETx01bA5elBJEDWkfvUmngXhZrbY")
 
@@ -21,55 +22,66 @@ def print_menu():
 
 def deposit(account_id):
     global r
+    
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
+        
     while True:
         try:
-            to_deposit = int(input("\nAmount to deposit: "))
+            to_deposit = float(input("\nAmount to deposit: "))
+            to_deposit *= 100
+            math.trunc(to_deposit)
+            to_deposit /= 100
             break
         except ValueError:
             print("Invalid input! Try again...")
+            
     if choice == 'C' or choice == 'c':
         newBal = float(r.hget(account_id, "CheckingBalance")) + to_deposit
         r.hset(account_id, "CheckingBalance", newBal)
     elif choice == 'S' or choice == 's':
         newBal = float(r.hget(account_id, "SavingsBalance")) + to_deposit
         r.hset(account_id, "SavingsBalance", newBal)
+        
     print("\nChecking Account Balance: $" + str(float(r.hget(account_id, "CheckingBalance"))))
     print("Savings Account Balance: $" + str(float(r.hget(account_id, "SavingsBalance"))))
+    
     input_choice(account_id)
 
 def withdraw(account_id):
     global r
+    
     choice = str(input("\nAccount Type (C/S): "))
     while choice not in ['C','c','S','s']:
         choice = str(input("\nInvalid input! Account Type (C/S): "))
+        
     while True:
         try:
-            to_withdraw = int(input("\nAmount to withdraw: "))
+            to_withdraw = float(input("\nAmount to withdraw: "))
+            to_withdraw *= 100
+            math.trunc(to_withdraw)
+            to_withdraw /= 100
             break
         except ValueError:
             print("Invalid input! Try again...")
-    global money_check, money_save
+            
     if choice == 'C' or choice == 'c':
-        if money_check > 0:
-            money_check -= to_withdraw
-            if money_check < 0:
-                money_check += to_withdraw
-                print("Insufficient Funds!")
+        if float(r.hget(account_id, "CheckingBalance")) >= to_withdraw:
+            newBal = float(r.hget(account_id, "CheckingBalance")) - to_withdraw
+            r.hset(account_id, "CheckingBalance", newBal)
         else:
             print("Insufficient Funds!")
     elif choice == 'S' or choice == 's':
-        if money_save > 0:
-            money_save -= to_withdraw
-            if money_save < 0:
-                money_save += to_withdraw
-                print("Insufficient Funds!")
+        if float(r.hget(account_id, "SavingsBalance")) >= to_withdraw:
+            newBal = float(r.hget(account_id, "SavingsBalance")) - to_withdraw
+            r.hset(account_id, "SavingsBalance", newBal)
         else:
             print("Insufficient Funds!")
-    print("\nChecking Account Balance: $" + str(money_check))
-    print("Savings Account Balance: $" + str(money_save))
+            
+    print("\nChecking Account Balance: $" + str(float(r.hget(account_id, "CheckingBalance"))))
+    print("Savings Account Balance: $" + str(float(r.hget(account_id, "SavingsBalance"))))
+    
     input_choice(account_id)
 
 def transfer(account_id):
@@ -79,7 +91,7 @@ def transfer(account_id):
         choice = str(input("\nInvalid input! Account Type (C/S): "))
     while True:
         try:
-            to_transfer = int(input("\nAmount to transfer: "))
+            to_transfer = float(input("\nAmount to transfer: "))
             break
         except ValueError:
             print("Invalid input! Try again...")

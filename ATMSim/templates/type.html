@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Transaction Selector{% endblock %}
+
+{% block content %}
+
+<p>Welcome, {{name}}!</p>
+<p>Checking Balance: ${{cbal}}</p>
+<p>Savings Balance: ${{sbal}}</p>
+
+<form action="#" method="post">
+  <p>Please select the account you wish to use:</p>
+  <div>
+    <input type="radio" id="check"
+     name="type" value="C" checked>
+    <label for="check">Checking Account</label>
+
+    <input type="radio" id="save"
+     name="type" value="S">
+    <label for="save">Savings Account</label>
+  </div>
+  <p>Please select the operation requested:</p>
+  <div>
+    <input type="radio" id="deposit"
+     name="trans" value="D" checked>
+    <label for="deposit">Deposit</label>
+
+    <input type="radio" id="withdraw"
+     name="trans" value="W">
+    <label for="deposit">Withdrawal</label>
+    
+    <input type="radio" id="transfer"
+     name="trans" value="T">
+    <label for="deposit">Transfer</label>
+  </div>
+  <p>Please enter the transaction amount: <input type="text" name="total" /></p>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,10 +1,8 @@
 from flask import Flask, redirect, url_for, render_template, request, session
 import ATMSimulation
-# from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = "Fool me once...shame on you. Fool me...won't get fooled again"
-# app.permanent_session_lifetime = timedelta(minutes=5)
 
 @app.route("/")
 def home():

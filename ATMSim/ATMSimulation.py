@@ -14,10 +14,9 @@ def createAccount(account_id, ssn, name, pin, check, save):
         r.hset(name = account_id, mapping = d)
 
 # Creates account if account_id does not exist.
-def deleteAccount(account_id, ssn, name, pin, check, save):
+def deleteAccount(account_id):
     if idValidate(account_id) == True:
-        d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":check, "SavingsBalance":save}
-        r.hdel(name = account_id, mapping = d)
+        r.delete(account_id)
         
 # Validates account_id by requesting its value from the server.
 def idValidate(account_id):

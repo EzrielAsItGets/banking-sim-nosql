@@ -13,10 +13,17 @@ def debug():
         pin = request.form["pin"]
         check = request.form["check"]
         save = request.form["save"]
-        if ATMSimulation.idValidate(account_id):
-            flash("Account ID Exists!")
-        else:
-            ATMSimulation.createAccount(account_id, ssn, name, pin, check, save)
+        choice = request.form["type"]
+        if choice == "create":
+            if ATMSimulation.idValidate(account_id):
+                flash("Account ID Exists!")
+            else:
+                ATMSimulation.createAccount(account_id, ssn, name, pin, check, save)
+                flash("Account Created")
+        elif choice == "delete":
+            if ATMSimulation.idValidate(account_id):
+                ATMSimulation.deleteAccount(account_id)
+                flash("Account Deleted")
     return render_template("debug.html")
 
 @app.route("/")

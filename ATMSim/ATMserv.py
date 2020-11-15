@@ -24,6 +24,8 @@ def debug():
             if ATMSimulation.idValidate(account_id):
                 ATMSimulation.deleteAccount(account_id)
                 flash("Account Deleted")
+            else:
+                flash("Account Doesn't Exist!")
     return render_template("debug.html")
 
 @app.route("/")

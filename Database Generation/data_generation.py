@@ -34,8 +34,8 @@ def name_builder(first_name_list_path, last_name_list_path):
 	name = first_name_selected+" "+last_name_selected
 	return name
 
-for i in range(0, 100):
-    ssn = random.randint(3121, 5672)
+for i in range(0, 700):
+    ssn = random.randint(100000000, 999999999)
     name = name_builder('first_names_list.txt', 'last_names_list.txt')
     pin = random.randint(1000, 9999)
     

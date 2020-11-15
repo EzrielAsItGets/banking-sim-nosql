@@ -4,7 +4,7 @@ import ATMSimulation
 app = Flask(__name__)
 app.secret_key = "Fool me once...shame on you. Fool me...won't get fooled again"
 
-@app.route("/debug")
+@app.route("/debug", methods=["POST", "GET"])
 def debug():
     return render_template("debug.html")
 

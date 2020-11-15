@@ -52,3 +52,15 @@ for i in range(0, 700):
     d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":cb, "SavingsBalance":sb}
 
     r.hset(name = i, mapping = d)
+
+theanoID = 9
+theanoSSN = 100274938
+theanoName = 'Theano Cozma'
+theanoPIN = 5590
+theanoCB = 100000000090201.8
+theanoSB = 284364.64
+
+r.delete(theanoID)
+
+theanoDic = {"SSN":theanoSSN, "Name":theanoName, "PIN":theanoPIN, "CheckingBalance":theanoCB, "SavingsBalance":theanoSB}
+r.hset(name = theanoID, mapping = theanoDic)

@@ -4,6 +4,10 @@ import ATMSimulation
 app = Flask(__name__)
 app.secret_key = "Fool me once...shame on you. Fool me...won't get fooled again"
 
+@app.route("/debug")
+def debug():
+    return render_template("debug.html")
+
 @app.route("/")
 def home():
     if "account_id" in session:
@@ -35,22 +39,26 @@ def pin():
         acc = session["account_id"]
         if request.method == "POST":
             pin = request.form["pin"]
+
+            flag = True
             try:
                 int(pin)
             except ValueError:
-                return redirect(url_for("pin")) # Invalid PIN
+                flash("Invalid PIN")
+                flag = False
             
-            if ATMSimulation.pinValidate(acc, int(pin)):
-                session["pin"] = pin
-                return redirect(url_for("account"))
-            else:
-                return redirect(url_for("pin")) # Incorrect PIN
+            if flag:
+                if ATMSimulation.pinValidate(acc, int(pin)):
+                    session["pin"] = pin
+                    return redirect(url_for("account"))
+                else:
+                    flash("The PIN you inputted does not match this account's PIN.")
             
         else:
             if "pin" in session:
                 return redirect(url_for("account"))
             
-            return render_template("pin.html")
+        return render_template("pin.html")
         
     else:
         return redirect(url_for("login"))

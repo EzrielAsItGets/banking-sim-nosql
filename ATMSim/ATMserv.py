@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 import ATMSimulation
 
 app = Flask(__name__)
@@ -22,12 +22,12 @@ def login():
             session["account_id"] = acc
             return redirect(url_for("pin"))
         else:
-            return redirect(url_for("login")) # Invalid Account
+            flash("Invalid Account")
     else:
         if "account_id" in session:
             return redirect(url_for("pin"))
         
-        return render_template("login.html")
+    return render_template("login.html")
     
 @app.route("/pin", methods = ["POST", "GET"])
 def pin():

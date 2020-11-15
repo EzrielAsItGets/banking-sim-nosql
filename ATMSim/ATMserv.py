@@ -6,6 +6,17 @@ app.secret_key = "Fool me once...shame on you. Fool me...won't get fooled again"
 
 @app.route("/debug", methods=["POST", "GET"])
 def debug():
+    if request.method == "POST":
+        account_id = request.form["acc_id"]
+        ssn = request.form["ssn"]
+        name = request.form["name"]
+        pin = request.form["pin"]
+        check = request.form["check"]
+        save = request.form["save"]
+        if ATMSimulation.idValidate(account_id):
+            flash("Account ID Exists!")
+        else:
+            ATMSimulation.createAccount(account_id, ssn, name, pin, check, save)
     return render_template("debug.html")
 
 @app.route("/")

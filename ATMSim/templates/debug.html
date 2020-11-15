@@ -2,28 +2,26 @@
 {% block title %}Account Verification{% endblock %}
 
 {% block content %}
-<form action="#" method="post">
-	<label for="acc_id">Account ID: </label>
-	<input type="number" id="acc_id" name="acc_id" min="0"/> <input type="submit" value="Submit"/>
+<form align="center" action="#" method="post">
+	<label for="acc_id">Account ID: </label><br>
+	<input type="number" id="acc_id" name="acc_id" min="0" value="1"/><br><br>
+	<label for="ssn">SSN: </label><br>
+	<input type="number" id="ssn" name="ssn" min="3121" max="5672" value="3121"/><br><br>
+	<label for="name">Name: </label><br>
+	<input type="text" id="name" name="name" value="Full Name"/><br><br>
+	<label for="pin">PIN: </label><br>
+	<input type="number" id="pin" name="pin" min="1000" max="9999" value="1000"/><br><br>
+	<label for="check">Checking Balance: </label><br>
+	<input type="number" id="check" name="check" min="0" value="20"/><br><br>
+	<label for="save">Savings Balance: </label><br>
+	<input type="number" id="save" name="save" min="0" value="20"/><br><br>
+	<input type="submit" value="Submit"/><br><br>
 </form>
-<form action="#" method="post">
-	<label for="ssn">SSN: </label>
-	<input type="number" id="ssn" name="ssn" min="3121" max="5672" /> <input type="submit" value="Submit"/>
-</form>
-<form action="#" method="post">
-	<label for="name">Name: </label>
-	<input type="text" id="name" name="name" /> <input type="submit" value="Submit"/>
-</form>
-<form action="#" method="post">
-	<label for="pin">PIN: </label>
-	<input type="number" id="pin" name="pin" min="1000" max="9999" /> <input type="submit" value="Submit"/>
-</form>
-<form action="#" method="post">
-	<label for="check">Checking Balance: </label>
-	<input type="number" id="check" name="check" min="0"/> <input type="submit" value="Submit"/>
-</form>
-<form action="#" method="post">
-	<label for="save">Savings Balance: </label>
-	<input type="number" id="save" name="save" min="0"/> <input type="submit" value="Submit"/>
-</form>
+<input type="radio" id="create"
+     name="type" value="create" checked>
+    <label for="create">Create</label>
+
+<input type="radio" id="delete"
+    name="type" value="delete">
+<label for="delete">Delete</label>
 {% endblock %}

@@ -6,7 +6,19 @@ Name: Ezriel Ciriaco
 
 import redis
 r = redis.Redis(host = "redis-18248.c15.us-east-1-2.ec2.cloud.redislabs.com", port = "18248", password = "P4eSETx01bA5elBJEDWkfvUmngXhZrbY")
-    
+
+# Creates account if account_id does not exist.
+def createAccount(account_id, ssn, name, pin, check, save):
+    if idValidate(account_id) == False:
+        d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":check, "SavingsBalance":save}
+        r.hset(name = account_id, mapping = d)
+
+# Creates account if account_id does not exist.
+def deleteAccount(account_id, ssn, name, pin, check, save):
+    if idValidate(account_id) == True:
+        d = {"SSN":ssn, "Name":name, "PIN":pin, "CheckingBalance":check, "SavingsBalance":save}
+        r.hdel(name = account_id, mapping = d)
+        
 # Validates account_id by requesting its value from the server.
 def idValidate(account_id):
     vals = r.hgetall(account_id)

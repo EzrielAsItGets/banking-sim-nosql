@@ -16,12 +16,9 @@
 	<label for="save">Savings Balance: </label><br>
 	<input type="number" id="save" name="save" min="0" value="20"/><br><br>
 	<input type="submit" value="Submit"/><br><br>
+	<input type="radio" id="create" name="type" value="C" checked>
+	<label for="create">Create</label>
+	<input type="radio" id="delete" name="type" value="D">
+	<label for="delete">Delete</label>
 </form>
-<input type="radio" id="create"
-     name="type" value="create" checked>
-    <label for="create">Create</label>
-
-<input type="radio" id="delete"
-    name="type" value="delete">
-<label for="delete">Delete</label>
 {% endblock %}

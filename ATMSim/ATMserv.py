@@ -14,13 +14,13 @@ def debug():
         check = request.form["check"]
         save = request.form["save"]
         choice = request.form["type"]
-        if choice == "create":
+        if choice == "C":
             if ATMSimulation.idValidate(account_id):
                 flash("Account ID Exists!")
             else:
                 ATMSimulation.createAccount(account_id, ssn, name, pin, check, save)
                 flash("Account Created")
-        elif choice == "delete":
+        elif choice == "D":
             if ATMSimulation.idValidate(account_id):
                 ATMSimulation.deleteAccount(account_id)
                 flash("Account Deleted")

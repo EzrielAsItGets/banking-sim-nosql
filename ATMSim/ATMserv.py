@@ -26,17 +26,15 @@ def debug():
                 flash("Account Deleted")
             else:
                 flash("Account Doesn't Exist!")
+
     return render_template("debug.html")
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def home():
-    if "account_id" in session:
-        if "pin" in session:
-            return redirect(url_for("account"))
-        else:
-            return redirect(url_for("pin"))
-    else:
-        return redirect(url_for("login"))
+    session.pop("account_id", None)
+    session.pop("pin", None)
+
+    return render_template("home.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -47,13 +45,10 @@ def login():
             return redirect(url_for("pin"))
         else:
             flash("Invalid Account")
-    else:
-        if "account_id" in session:
-            return redirect(url_for("pin"))
-        
+			
     return render_template("login.html")
-    
-@app.route("/pin", methods = ["POST", "GET"])
+
+@app.route("/pin", methods=["POST", "GET"])
 def pin():
     if "account_id" in session:
         acc = session["account_id"]
@@ -74,73 +69,144 @@ def pin():
                 else:
                     flash("The PIN you inputted does not match this account's PIN.")
             
-        else:
-            if "pin" in session:
-                return redirect(url_for("account"))
-            
-        return render_template("pin.html")
-        
-    else:
-        return redirect(url_for("login"))
+    return render_template("pin.html")
 
-@app.route("/account", methods = ["POST", "GET"])    
+@app.route("/account", methods=["POST", "GET"])
 def account():
     if "account_id" in session:
         if "pin" in session:
             acc = session["account_id"]
             name = ATMSimulation.getName(acc)
             cbal, sbal = ATMSimulation.getBalances(acc)
+            cbal = format(cbal, '.2f')
+            sbal = format(sbal, '.2f')
+
+    return render_template("options.html", name=name, cbal=cbal, sbal=sbal)
+
+@app.route("/deposit_choice", methods=["POST", "GET"])
+def deposit_choice():
+    session.pop("typ", None)
+
+    if "account_id" in session:
+        if "pin" in session:
+            acc = session["account_id"]
+            name = ATMSimulation.getName(acc)
             if request.method == "POST":
-                typ = request.form["type"]
-                trans = request.form["trans"]
-                total = request.form["total"]
-                try:
-                    numTotal = 0
-                    numTotal = float(total)
-                except ValueError:
-                    return redirect(url_for("account")) # Invalid amount input
-                finally:
-                    if numTotal <= 0:
-                        numTotal = 0
-                    
-                if (numTotal > 0):
-                    if trans == "D":
-                        ATMSimulation.deposit(acc, typ, numTotal)
-                    elif trans == "W":
-                        if not ATMSimulation.withdraw(acc, typ, numTotal):
-                            redirect(url_for("account")) # Insufficient Funds
-                    else:
-                        if not ATMSimulation.transfer(acc, typ, numTotal):
-                            redirect(url_for("account")) # Insufficient Funds
-                    
-                    return redirect(url_for("account"))
-                else:
-                    return redirect(url_for("account")) # Invalid transaction amount
+                typ = request.form.get("choice", None)
                 
-            else:
-                return render_template("type.html", name=name, cbal=cbal, sbal=sbal)
-            
-        else:
-            return redirect(url_for("pin"))
-        
-    else:
-        return redirect(url_for("login"))
-            
+                if typ != None:
+                    session["typ"] = typ
+                    return redirect(url_for("deposit"))
 
-# TEST (Remove later)
-@app.route("/user")
-def user():
-	if "account_id" in session:
-		acc = session["account_id"]
-		return f"<h1>{acc}</h1>"
-	else:
-		return redirect(url_for("login"))
+    return render_template("deposit_choice.html", name=name)
 
-@app.route("/logout")
-def logout():
-    session.pop("account_id", None)
-    session.pop("pin", None)
-    return redirect(url_for("login"))
+@app.route("/deposit", methods=["POST", "GET"])
+def deposit():
+    if "account_id" in session:
+        if "pin" in session:
+            if "typ" in session:
+                acc = session["account_id"]
+                name = ATMSimulation.getName(acc)
+                typ = session["typ"]
+                if request.method == "POST":
+                    total = request.form["CustomNumber"]
+                    try:
+                        numTotal = 0
+                        numTotal = float(total)
+                    except ValueError:
+                        return redirect(url_for("deposit")) # Invalid amount input
+                    finally:
+                        if numTotal <= 0:
+                            numTotal = 0
+                    
+                    if (numTotal > 0):
+                        ATMSimulation.deposit(acc, typ, numTotal)
+
+    return render_template("deposit.html", name=name)
+
+@app.route("/withdraw_choice", methods=["POST", "GET"])
+def withdraw_choice():
+    session.pop("typ", None)
+
+    if "account_id" in session:
+        if "pin" in session:
+            acc = session["account_id"]
+            name = ATMSimulation.getName(acc)
+            if request.method == "POST":
+                typ = request.form.get("choice", None)
+                
+                if typ != None:
+                    session["typ"] = typ
+                    return redirect(url_for("withdraw"))
+
+    return render_template("withdraw_choice.html", name=name)
+
+@app.route("/withdraw", methods=["POST", "GET"])
+def withdraw():
+    if "account_id" in session:
+        if "pin" in session:
+            if "typ" in session:
+                acc = session["account_id"]
+                name = ATMSimulation.getName(acc)
+                typ = session["typ"]
+                if request.method == "POST":
+                    total = request.form["CustomNumber"]
+                    try:
+                        numTotal = 0
+                        numTotal = float(total)
+                    except ValueError:
+                        return redirect(url_for("withdraw")) # Invalid amount input
+                    finally:
+                        if numTotal <= 0:
+                            numTotal = 0
+                    
+                    if (numTotal > 0):
+                        if not ATMSimulation.withdraw(acc, typ, numTotal):
+                            redirect(url_for("withdraw")) # Insufficient Funds
+
+    return render_template("withdraw.html", name=name)
+
+@app.route("/transfer_choice", methods=["POST", "GET"])
+def transfer_choice():
+    session.pop("typ", None)
+
+    if "account_id" in session:
+        if "pin" in session:
+            acc = session["account_id"]
+            name = ATMSimulation.getName(acc)
+            if request.method == "POST":
+                typ = request.form.get("choice", None)
+                
+                if typ != None:
+                    session["typ"] = typ
+                    return redirect(url_for("transfer"))
+
+    return render_template("transfer_choice.html", name=name)
+
+@app.route("/transfer", methods=["POST", "GET"])
+def transfer():
+    if "account_id" in session:
+        if "pin" in session:
+            if "typ" in session:
+                acc = session["account_id"]
+                name = ATMSimulation.getName(acc)
+                typ = session["typ"]
+                if request.method == "POST":
+                    total = request.form["CustomNumber"]
+                    try:
+                        numTotal = 0
+                        numTotal = float(total)
+                    except ValueError:
+                        return redirect(url_for("transfer")) # Invalid amount input
+                    finally:
+                        if numTotal <= 0:
+                            numTotal = 0
+                    
+                    if (numTotal > 0):
+                        if not ATMSimulation.transfer(acc, typ, numTotal):
+                            redirect(url_for("transfer")) # Insufficient Funds
+
+    return render_template("home.html")
 
 if __name__ == "__main__":
 	app.run()

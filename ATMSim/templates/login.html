@@ -1,9 +1,62 @@
 {% extends "base.html" %}
 {% block title %}Account Verification{% endblock %}
 
-{% block content %}
-<form action="#" method="post">
-	<p>Please enter your account number:</p>
-	<p><input type="text" name="acc" /> <input type="submit" value="->"/></p>
-</form>
+{% block div %}
+<div class="row">
+	<div class="col-xs-12" id="screenView">
+	  <!-- Place <h1></h1> below -->
+
+	  <!-- Replace Video with Animated Gif or Animated SVG -->
+	  <div class="row">
+		<div class="col-xs-8 text-center" style="border-right:solid 3px #CCC">
+		  <h1 class="demo-section-title text-uppercase text-center">Input Your Pin Number</h1>
+		  <input type="text" id="userPinInput" class="form-control" disabled/>
+		  <!-- TABLE -->
+		  <div id="pinPad">
+			<table>
+			  <tr>
+				<td><a id="acc1" href="#" class="btn btn-block btn-lg btn-inverse">1</a></td>
+				<td><a id="acc2" href="#" class="btn btn-block btn-lg btn-inverse">2</a></td>
+				<td><a id="acc3" href="#" class="btn btn-block btn-lg btn-inverse">3</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="acc4" href="#" class="btn btn-block btn-lg btn-inverse">4</a></td>
+				<td><a id="acc5" href="#" class="btn btn-block btn-lg btn-inverse">5</a></td>
+				<td><a id="acc6" href="#" class="btn btn-block btn-lg btn-inverse">6</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="acc7" href="#" class="btn btn-block btn-lg btn-inverse">7</a></td>
+				<td><a id="acc8" href="#" class="btn btn-block btn-lg btn-inverse">8</a></td>
+				<td><a id="acc9" href="#" class="btn btn-block btn-lg btn-inverse">9</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="acc0" href="#" class="btn btn-block btn-lg btn-inverse">0</a></td>
+				<td colspan="2"><a id="accClear" href="#" class="btn btn-block btn-lg btn-default text-uppercase">Clear</a></td>
+				
+			  </tr>
+			</table>
+		  </div><!-- // Pin Pad -->
+		  
+		  <div id="confirmPin" onClick="javascript:document.forms[0].submit();">
+			<a href="#" class="btn btn-block btn-lg btn-success text-uppercase">Confirm</a>
+		  </div>
+		  <div id="cancelTransaction">
+			<a href="\" class="btn btn-block btn-lg btn-danger text-uppercase"><span class="fui-cross"></span> Cancel</a>
+		  </div><!-- // Pin Pad -->
+		</div> 
+
+
+		<div class="col-xs-4">
+		  <div style="margin-top:8rem;">
+			<h3 style="text-align:center" class="tile-title">ACCOUNT NUMBER</h3><br>
+				<form action="#" method="POST">
+					<input type="number" id="acc" name="acc" class="form-control" min="0" max="699" enabled/>
+				</form>
+			<img src="{{ url_for('static', filename = 'img/CardInsertedGreenLight.png') }}" style="width:16em;"/>
+		  </div>
+		</div><!-- /.col-xs-4 -->
+
+		
+	  </div><!-- // END login screen  -->
+  </div><!--  // END column-->
 {% endblock %}

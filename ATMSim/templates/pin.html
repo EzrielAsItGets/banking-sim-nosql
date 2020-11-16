@@ -1,9 +1,62 @@
 {% extends "base.html" %}
 {% block title %}PIN Entry{% endblock %}
 
-{% block content %}
-<form action="#" method="post">
-	<p>Please enter your PIN:</p>
-	<p><input type="text" name="pin" /> <input type="submit" value="->"/></p>
-</form>
+{% block div %}
+<div class="row">
+	<div class="col-xs-12" id="screenView">
+	  <!-- Place <h1></h1> below -->
+
+	  <!-- Replace Video with Animated Gif or Animated SVG -->
+	  <div class="row">
+		<div class="col-xs-8 text-center" style="border-right:solid 3px #CCC">
+		  <h1 class="demo-section-title text-uppercase text-center">Input Your Pin Number</h1>
+			<form action="#" method="POST">
+		  		<input type="text" id="pin" name="pin" class="form-control" enabled/>
+			</form>
+		  <!-- TABLE -->
+		  <div id="pinPad">
+			<table>
+			  <tr>
+				<td><a id="pin1" href="#" class="btn btn-block btn-lg btn-inverse">1</a></td>
+				<td><a id="pin2" href="#" class="btn btn-block btn-lg btn-inverse">2</a></td>
+				<td><a id="pin3" href="#" class="btn btn-block btn-lg btn-inverse">3</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="pin4" href="#" class="btn btn-block btn-lg btn-inverse">4</a></td>
+				<td><a id="pin5" href="#" class="btn btn-block btn-lg btn-inverse">5</a></td>
+				<td><a id="pin6" href="#" class="btn btn-block btn-lg btn-inverse">6</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="pin7" href="#" class="btn btn-block btn-lg btn-inverse">7</a></td>
+				<td><a id="pin8" href="#" class="btn btn-block btn-lg btn-inverse">8</a></td>
+				<td><a id="pin9" href="#" class="btn btn-block btn-lg btn-inverse">9</a></td>
+			  </tr>
+			  <tr>
+				<td><a id="pin0" href="#" class="btn btn-block btn-lg btn-inverse">0</a></td>
+				<td colspan="2"><a id="pinClear" href="#" class="btn btn-block btn-lg btn-default text-uppercase">Clear</a></td>
+				
+			  </tr>
+			</table>
+		  </div><!-- // Pin Pad -->
+		  
+		  <div id="confirmPin" onClick="javascript:document.forms[0].submit();">
+			<a href="#" class="btn btn-block btn-lg btn-success text-uppercase">Confirm</a>
+		  </div>
+		  <div id="cancelTransaction">
+			<a href="\" class="btn btn-block btn-lg btn-danger text-uppercase"><span class="fui-cross"></span> Cancel</a>
+		  </div><!-- // Pin Pad -->
+		</div> 
+
+
+		<div class="col-xs-4">
+		  <div style="margin-top:8rem;">
+			<h3 style="text-align:center" class="tile-title">ACCOUNT NUMBER</h3><br>
+				<input type="number" id="acc" name="acc" class="form-control" min="0" max="699" disabled/>
+			<img src="{{ url_for('static', filename = 'img/CardInsertedGreenLight.png') }}" style="width:16em;"/>
+		  </div>
+		</div><!-- /.col-xs-4 -->
+
+		
+	  </div><!-- // END login screen  -->
+  </div><!--  // END column-->
 {% endblock %}

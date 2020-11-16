@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block div %}
+      <div class="row">
+        <div class="col-xs-12" id="screenView">
+          <!-- Place <h1></h1> below -->
+
+          <!-- Replace Video with Animated Gif or Animated SVG -->
+          <div class="row">
+            <div class="col-xs-8 text-center">
+              <h1 class="demo-section-title text-uppercase text-center">Insert Card to Begin</h1>
+              <a href="/login"><img src="{{ url_for('static', filename = 'img/InsertCardAnimate.gif') }}" /></a>
+            </div> <!-- // ANIMATED GIF -->
+
+
+            <div class="col-xs-4">
+              <br />
+              <div class="advertise">
+                <div class="adImage">
+                  <img src="{{ url_for('static', filename = 'img/icons/svg/chat.svg') }}" alt="Chat">
+                </div>
+                <div class="adTextcustom">Follow us on Twitter</div>
+              </div>
+              <div class="advertise" id="ad-highlight">
+                <div class="adImage">
+                  <img src="{{ url_for('static', filename = 'img/icons/svg/toilet-paper.svg') }}" alt="Toilet-Paper">
+                </div>
+                <div class="adTextcustom">Sign up for Paperless Statements</div>
+              </div>
+              <div class="advertise">
+                <div class="adImage">
+                  <img src="{{ url_for('static', filename = 'img/icons/svg/compas.svg') }}" alt="Compas">
+                </div>
+                <div class="adTextcustom">Save on Travel</div>
+              </div>
+              
+            </div><!-- /.col-xs-4 -->
+
+            
+          </div><!-- // END login screen  -->
+      </div><!--  // END column-->
+{% endblock %}

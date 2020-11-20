@@ -44,7 +44,7 @@ def login():
             session["account_id"] = acc
             return redirect(url_for("pin"))
         else:
-            flash("Invalid Account")
+            flash("Invalid Account!")
 			
     return render_template("login.html")
 
@@ -67,7 +67,7 @@ def pin():
                     session["pin"] = pin
                     return redirect(url_for("account"))
                 else:
-                    flash("The PIN you inputted does not match this account's PIN.")
+                    flash("Incorrect PIN!")
             
     return render_template("pin.html")
 
@@ -114,13 +114,17 @@ def deposit():
                         numTotal = 0
                         numTotal = float(total)
                     except ValueError:
+                        flash("Invalid Input!")
                         return redirect(url_for("deposit")) # Invalid amount input
                     finally:
                         if numTotal <= 0:
                             numTotal = 0
                     
                     if (numTotal > 0):
-                        ATMSimulation.deposit(acc, typ, numTotal)
+                        ATMSimulation.deposit(acc, typ, numTotal):
+                        return redirect(url_for("account"))
+                    else:
+                        flash("Input an amount greater than $0!")
 
     return render_template("deposit.html", name=name)
 
@@ -162,7 +166,10 @@ def withdraw():
                     
                     if (numTotal > 0):
                         if not ATMSimulation.withdraw(acc, typ, numTotal):
+                            flash("Insufficient Funds!")
                             redirect(url_for("withdraw")) # Insufficient Funds
+                        else:
+                            return redirect(url_for("account"))
 
     return render_template("withdraw.html", name=name)
 
@@ -204,7 +211,10 @@ def transfer():
                     
                     if (numTotal > 0):
                         if not ATMSimulation.transfer(acc, typ, numTotal):
+                            flash("Insufficient Funds!")
                             redirect(url_for("transfer")) # Insufficient Funds
+                        else:
+                            return redirect(url_for("account")) 
 
     return render_template("transfer.html")
 

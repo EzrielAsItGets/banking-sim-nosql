@@ -88,7 +88,7 @@
                <a id="cancelTransactin" href="/account" class="btn btn-lg btn-danger text-uppercase btn-padding"><span class="fui-cross"></span> Cancel</a>
               </div>
               <div class="tile">
-                <form id="choiceIDForm" action="{{ url_for('deposit_choice') }}", method="POST"> 
+                <form id="choiceIDForm" action="{{ url_for('withdraw_choice') }}", method="POST"> 
                   <select id="choiceID" name="choice" class="form-control select select-primary" data-toggle="select">
                     <option value="C" selected>Checking</option>
                     <option value="S">Savings</option>

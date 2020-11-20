@@ -206,7 +206,7 @@ def transfer():
                         if not ATMSimulation.transfer(acc, typ, numTotal):
                             redirect(url_for("transfer")) # Insufficient Funds
 
-    return render_template("home.html")
+    return render_template("transfer.html")
 
 if __name__ == "__main__":
 	app.run()

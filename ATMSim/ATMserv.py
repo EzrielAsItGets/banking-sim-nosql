@@ -121,7 +121,7 @@ def deposit():
                             numTotal = 0
                     
                     if (numTotal > 0):
-                        ATMSimulation.deposit(acc, typ, numTotal):
+                        ATMSimulation.deposit(acc, typ, numTotal)
                         return redirect(url_for("account"))
                     else:
                         flash("Input an amount greater than $0!")
